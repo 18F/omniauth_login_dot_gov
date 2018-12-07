@@ -1,0 +1,7 @@
+.env*
+.ruby_version
+Gemfile.lock
+tmp/
+*.pem
+*.crt
+.overcommit.yml

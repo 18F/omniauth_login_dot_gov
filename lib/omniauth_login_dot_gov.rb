@@ -1,0 +1,8 @@
+require 'faraday'
+require 'json/jwt'
+require 'jwt'
+require 'multi_json'
+require 'openssl'
+require 'securerandom'
+require 'omniauth'
+require 'omniauth/login_dot_gov'
