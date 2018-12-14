@@ -5,3 +5,4 @@ tmp/
 *.pem
 *.crt
 .overcommit.yml
+tmp/*

@@ -6,8 +6,21 @@ module OmniAuth
       :id_token,
       :expires_in,
       :token_type,
-      keyword_init: true
     ) do
+      def initialize(
+        client:,
+        access_token:,
+        id_token:,
+        expires_in:,
+        token_type:
+      )
+        self.client = client
+        self.access_token = access_token
+        self.id_token = id_token
+        self.expires_in = expires_in
+        self.token_type = token_type
+      end
+
       def verify_nonce(session_nonce_digest)
         token_nonce = decoded_id_token['nonce']
         token_nonce_digest = OpenSSL::Digest::SHA256.base64digest(token_nonce)
