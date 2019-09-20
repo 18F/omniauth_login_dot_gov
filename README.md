@@ -41,15 +41,41 @@ Now that your app is configured with login.gov's sandbox as a Service Provider, 
   Rails.application.config.middleware.use OmniAuth::Builder do
     provider :login_dot_gov, {
       name: :login_dot_gov,
-      client_id: 'urn:gov:gsa:openidconnect:sp:myapp',
-      idp_base_url: 'https://idp.int.identitysandbox.gov/',
+      client_id: 'urn:gov:gsa:openidconnect:sp:myapp', # same value as registered in the Partner Dashboard
+      idp_base_url: 'https://idp.int.identitysandbox.gov/', # login.gov sandbox environment IdP
       ial: 1,
-      private_key: OpenSSL::PKey::RSA.new(File.read('config/myapp.pem')),
+      private_key: OpenSSL::PKey::RSA.new(File.read('config/private.pem')),
       redirect_uri: 'http://localhost:3000/auth/logindotgov/callback',
     }
   end
   ```
-5. Start your application and visit: `/auth/logindotgov` (eg. http://localhost:3000/auth/logindotgov) to initiate authentication with login.gov!
+5. Create a controller for handling the callback, such as this:
+  ```ruby
+  # app/controllers/users/omniauth_controller.rb
+  module Users
+    class OmniauthController < ApplicationController
+      def callback
+        omniauth_info = request.env['omniauth.auth']['info']
+        @user = User.find_by(email: omniauth_info['email'])
+        if @user
+          @user.update!(uuid: omniauth_info['uuid'])
+          sign_in @user
+          redirect_to service_providers_path
+
+        # Can't find an account, tell user to contact login.gov team
+        else
+          redirect_to users_none_url
+        end
+      end
+    end
+  end
+  ```
+6. Add the callback route to `routes.rb`
+  ```ruby
+  get '/auth/logindotgov/callback' => 'users/omniauth#callback'
+  ```
+
+7. Start your application and visit: `/auth/logindotgov` (eg. http://localhost:3000/auth/logindotgov) to initiate authentication with login.gov!
 
 
 ## Public domain
