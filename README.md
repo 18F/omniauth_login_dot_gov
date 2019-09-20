@@ -1,57 +1,89 @@
-This gem can be used with OmniAuth to provide authentication with Login.gov in
-a rack application.
+# login.gov Omniauth strategy
 
-# Getting started in a Rails app
+This gem is an Omniauth strategy to provide authentication with Login.gov in a rack application with the OpenID:Connect protocol.
 
-This describes the configuration for a rails app identified by `myapp` that runs
-on port `4040`. You should be able to change the configuration as necessary for
-your application.
+## Getting started in a Rails app
 
-First you will need a private key and a certificate for that private key.
-Those can be generated with the following:
+Our [developer documentation](https://developers.login.gov/oidc/) will have the most up-to-date information on OIDC integration including available scopes and attributes.
+
+#### Generate your keys
+
+Before you begin, you will need a self-signed private and public certificate/key pair.
+To generate the private and public key pair and output your public certificate with PEM formatting:
 
 ```shell
-openssl req -nodes -newkey rsa:2048 -x509 -keyout myapp.pem -out myapp.crt
+openssl req -nodes -x509 -days 365 -newkey rsa:2048 -keyout private.pem -out public.crt
 ```
 
-Copy the certificate to `/config/certs/sp/myapp.crt` in the
-[identity-idp](https://github.com/18F/identity-idp). Then, add the following
-entry to `config/service_providers.yml`:
+Note: the `-nodes` flag skips encryption of the private key and is not recommended for production use.
 
-```yaml
-'urn:gov:gsa:openidconnect:sp:myapp':
-  agency: 'GSA'
-  cert: 'myapp'
-  friendly_name: 'Demo OmniAuth app'
-  logo: '18f.svg'
-  redirect_uris:
-    - 'http://localhost:4040/auth/logindotgov/callback'
-```
+#### Register your app with the login.gov sandbox
 
-Run `rake db:seed` to update the service provider table.
+You will need to register your service provider with our sandbox environment using the login.gov [Partner Dashboard](https://dashboard.int.identitysandbox.gov). Note: this is not your production login.gov account.
 
-Now, the key can be added to your repo. For this example let's put it at
-`config/myapp.pem`.
+1. Log in to the [Partner Dashboard](https://dashboard.int.identitysandbox.gov).
+2. Choose [Create new test app](https://dashboard.int.identitysandbox.gov/service_providers/new).
+3. Enter the required fields to identify your service provider, including the **public** self-signed certificate you generated earlier.
 
-Add this gem to the Gemfile and run `bundle install`:
+#### Configure your app
 
-```ruby
-gem 'omniauth_login_dot_gov', :git => 'https://github.com/18f/omniauth_login_dot_gov.git'
-```
+Now that your app is configured with login.gov's sandbox as a Service Provider, you can begin configuring your local application.
 
-Now, configure the omniauth middleware and add it in an initializer:
+1. Copy your private key to your application's `config` directory (eg. `config/private.pem`)
+2. Add this gem to the Gemfile:
+  ```ruby
+  gem 'omniauth_login_dot_gov', :git => 'https://github.com/18f/omniauth_login_dot_gov.git'
+  ```
+3. Install this gem and dependencies with `bundle install`
+4. Now, configure the Omniauth middleware with an initializer:
+  ```ruby
+  # config/initializers/omniauth.rb
+  Rails.application.config.middleware.use OmniAuth::Builder do
+    provider :login_dot_gov, {
+      name: :login_dot_gov,
+      client_id: 'urn:gov:gsa:openidconnect:sp:myapp', # same value as registered in the Partner Dashboard
+      idp_base_url: 'https://idp.int.identitysandbox.gov/', # login.gov sandbox environment IdP
+      ial: 1,
+      private_key: OpenSSL::PKey::RSA.new(File.read('config/private.pem')),
+      redirect_uri: 'http://localhost:3000/auth/logindotgov/callback',
+    }
+  end
+  ```
+5. Create a controller for handling the callback, such as this:
+  ```ruby
+  # app/controllers/users/omniauth_controller.rb
+  module Users
+    class OmniauthController < ApplicationController
+      def callback
+        omniauth_info = request.env['omniauth.auth']['info']
+        @user = User.find_by(email: omniauth_info['email'])
+        if @user
+          @user.update!(uuid: omniauth_info['uuid'])
+          sign_in @user
+          redirect_to service_providers_path
 
-```ruby
-# config/initializers/omniauth.rb
-Rails.application.config.middleware.use OmniAuth::Builder do
-  provider :login_dot_gov, {
-    client_id: 'urn:gov:gsa:openidconnect:sp:myapp',
-    idp_base_url: 'http://localhost:3000/',
-    ial: 1,
-    private_key: OpenSSL::PKey::RSA.new(File.read('config/myapp.pem')),
-    redirect_uri: 'http://localhost:4040/auth/logindotgov/callback',
-  }
-end
-```
+        # Can't find an account, tell user to contact login.gov team
+        else
+          redirect_to users_none_url
+        end
+      end
+    end
+  end
+  ```
+6. Add the callback route to `routes.rb`
+  ```ruby
+  get '/auth/logindotgov/callback' => 'users/omniauth#callback'
+  ```
 
-Now start both apps and visit `/auth/logindotgov` on `myapp`.
+7. Start your application and visit: `/auth/logindotgov` (eg. http://localhost:3000/auth/logindotgov) to initiate authentication with login.gov!
+
+
+## Public domain
+
+This project is in the worldwide [public domain](LICENSE.md). As stated in [CONTRIBUTING](CONTRIBUTING.md):
+
+> This project is in the public domain within the United States, and copyright and related rights in the work worldwide are waived through the [CC0 1.0 Universal public domain dedication](https://creativecommons.org/publicdomain/zero/1.0/).
+>
+> All contributions to this project will be released under the CC0
+> dedication. By submitting a pull request, you are agreeing to comply
+> with this waiver of copyright interest.
