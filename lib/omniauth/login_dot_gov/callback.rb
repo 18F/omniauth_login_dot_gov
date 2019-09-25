@@ -15,7 +15,7 @@ module OmniAuth
           code: params['code'],
           client: client
         ).request_id_token
-        id_token.verify_nonce(get_oidc_value_from_session('nonce_digest'))
+        id_token.verify_nonce(get_oidc_value_from_session(:nonce_digest))
         @userinfo = UserinfoRequest.new(
           id_token: id_token,
           client: client
