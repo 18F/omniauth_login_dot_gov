@@ -23,9 +23,9 @@ describe OmniAuth::LoginDotGov::Callback do
   let(:session) do
     {
       'oidc' => {
-        'state_digest' => state_digest,
-        'nonce_digest' => nonce_digest,
-      },
+        state_digest: state_digest,
+        nonce_digest: nonce_digest,
+      }
     }
   end
 
