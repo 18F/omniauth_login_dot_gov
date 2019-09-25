@@ -29,7 +29,7 @@ module OmniAuth
         cb_state_digest = OpenSSL::Digest::SHA256.base64digest(cb_state)
         return if SecureCompare.compare(
           cb_state_digest,
-          get_oidc_value_from_session('state_digest')
+          get_oidc_value_from_session(:state_digest)
         )
         raise CallbackStateMismatchError
       end
