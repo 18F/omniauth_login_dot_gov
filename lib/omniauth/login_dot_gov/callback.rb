@@ -15,7 +15,7 @@ module OmniAuth
           code: params['code'],
           client: client
         ).request_id_token
-        id_token.verify_nonce(get_oidc_value_from_session('nonce_digest'))
+        id_token.verify_nonce(get_oidc_value_from_session(:nonce_digest))
         @userinfo = UserinfoRequest.new(
           id_token: id_token,
           client: client
@@ -29,7 +29,7 @@ module OmniAuth
         cb_state_digest = OpenSSL::Digest::SHA256.base64digest(cb_state)
         return if SecureCompare.compare(
           cb_state_digest,
-          get_oidc_value_from_session('state_digest')
+          get_oidc_value_from_session(:state_digest)
         )
         raise CallbackStateMismatchError
       end
@@ -47,7 +47,7 @@ module OmniAuth
       end
 
       def get_oidc_value_from_session(key)
-        oidc_session = session['oidc']
+        oidc_session = session[:oidc]
         return if oidc_session.nil?
         oidc_session[key]
       end

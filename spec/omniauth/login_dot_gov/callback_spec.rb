@@ -22,10 +22,10 @@ describe OmniAuth::LoginDotGov::Callback do
   let(:nonce_digest) { OpenSSL::Digest::SHA256.base64digest(nonce) }
   let(:session) do
     {
-      'oidc' => {
-        'state_digest' => state_digest,
-        'nonce_digest' => nonce_digest,
-      },
+      oidc: {
+        state_digest: state_digest,
+        nonce_digest: nonce_digest,
+      }
     }
   end
 
