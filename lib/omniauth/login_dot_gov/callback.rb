@@ -4,7 +4,7 @@ module OmniAuth
       attr_reader :session, :client, :id_token, :userinfo
 
       def initialize(session:, client:)
-        @session = session
+        @session = session.to_hash.symbolize_keys
         @client = client
       end
 
@@ -47,7 +47,7 @@ module OmniAuth
       end
 
       def get_oidc_value_from_session(key)
-        oidc_session = session[:oidc]
+        oidc_session = session[:oidc].symbolize_keys
         return if oidc_session.nil?
         oidc_session[key]
       end
