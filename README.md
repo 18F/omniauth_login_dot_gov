@@ -4,6 +4,12 @@
 
 This gem is an Omniauth strategy to provide authentication with Login.gov in a rack application with the OpenID:Connect protocol.
 
+#### ⚠️  Common Vulnerabilities and Exposure Warning:
+There is a known vulnerability with Omniauth that affects this gem as
+well as any implementation of Omniauth with a single strategy. Please
+review [CVE-2015-9284](https://nvd.nist.gov/vuln/detail/CVE-2015-9284) for more
+information and mitigation steps.
+
 ## Getting started in a Rails app
 
 Our [developer documentation](https://developers.login.gov/oidc/) will have the most up-to-date information on OIDC integration including available scopes and attributes.
