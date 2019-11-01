@@ -8,7 +8,8 @@ This gem is an Omniauth strategy to provide authentication with Login.gov in a r
 There is a known vulnerability with Omniauth that affects this gem as
 well as any implementation of Omniauth with a single strategy. Please
 review [CVE-2015-9284](https://nvd.nist.gov/vuln/detail/CVE-2015-9284) for more
-information and mitigation steps.
+information and mitigation steps. The [Omniauth Wiki](https://github.com/omniauth/omniauth/wiki/Resolving-CVE-2015-9284) also
+has relevant information (August 2019). 
 
 ## Getting started in a Rails app
 
