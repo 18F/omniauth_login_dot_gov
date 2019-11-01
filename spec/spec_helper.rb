@@ -1,8 +1,12 @@
 require 'pry-byebug'
 require 'webmock'
 require 'webmock/rspec'
-
 require 'omniauth_login_dot_gov'
+
+if ENV['COVERAGE']
+  require 'simplecov'
+  SimpleCov.start
+end
 
 RSpec.configure do |config|
   # see more settings at spec/rails_helper.rb

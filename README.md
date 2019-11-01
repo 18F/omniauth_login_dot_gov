@@ -1,5 +1,7 @@
 # login.gov Omniauth strategy
 
+[![CircleCI](https://circleci.com/gh/18F/omniauth_login_dot_gov/tree/master.svg?style=svg)](https://circleci.com/gh/18F/omniauth_login_dot_gov/tree/master) [![Maintainability](https://api.codeclimate.com/v1/badges/9366c6d26e7ba895661f/maintainability)](https://codeclimate.com/github/18F/omniauth_login_dot_gov/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/9366c6d26e7ba895661f/test_coverage)](https://codeclimate.com/github/18F/omniauth_login_dot_gov/test_coverage)
+
 This gem is an Omniauth strategy to provide authentication with Login.gov in a rack application with the OpenID:Connect protocol.
 
 ## Getting started in a Rails app
