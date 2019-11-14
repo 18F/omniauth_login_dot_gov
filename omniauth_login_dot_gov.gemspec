@@ -25,11 +25,12 @@ Gem::Specification.new do |s|
   s.executables = `git ls-files -- bin/*`.split("\n").map { |f| File.basename(f) }
   s.require_paths = ['lib']
 
-  s.add_dependency 'faraday'
-  s.add_dependency 'json-jwt'
-  s.add_dependency 'jwt'
-  s.add_dependency 'multi_json'
-  s.add_dependency 'omniauth'
+  s.add_dependency 'activesupport', '~> 5.2'
+  s.add_dependency 'faraday', '~> 0.17'
+  s.add_dependency 'json-jwt', '~> 1.11'
+  s.add_dependency 'jwt', '~> 2.2'
+  s.add_dependency 'multi_json', '~> 1.14'
+  s.add_dependency 'omniauth', '~> 1.8.1'
 
   s.add_development_dependency 'codeclimate-test-reporter'
   s.add_development_dependency 'pry-byebug'
