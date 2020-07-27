@@ -34,4 +34,8 @@ module IdpFixtures
   def self.userinfo_endpoint
     'http://idp.example.gov/api/openid_connect/userinfo'
   end
+
+  def self.end_session_endpoint
+    'http://idp.example.gov/openid_connect/logout'
+  end
 end

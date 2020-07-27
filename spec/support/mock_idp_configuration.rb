@@ -11,6 +11,10 @@ class MockIdpConfiguration
     IdpFixtures.userinfo_endpoint
   end
 
+  def end_session_endpoint
+    IdpFixtures.end_session_endpoint
+  end
+
   def jwks_uri
     IdpFixtures.jwks_uri
   end
