@@ -17,7 +17,7 @@ module OmniAuth
           grant_type: 'authorization_code'
         )
         raise_id_token_request_failed_error(response) unless response.success?
-        id_token_from_respone(response)
+        id_token_from_response(response)
       end
 
       private
@@ -34,7 +34,7 @@ module OmniAuth
         JWT.encode data, client.private_key, 'RS256'
       end
 
-      def id_token_from_respone(response)
+      def id_token_from_response(response)
         parsed_body = MultiJson.load(response.body)
         IdToken.new(
           id_token: parsed_body['id_token'],
