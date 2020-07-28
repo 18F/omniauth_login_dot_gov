@@ -11,7 +11,7 @@ module OmniAuth
     #       redirect_to(logout_request.redirect_uri) and return
     #     end
     #
-    #     # Avoid making multiple HTTP requests by memoizing utility class
+    #     # Avoid making multiple HTTP requests to determine logout URL by memoizing utility class
     #     def self.logout_utility
     #       @logout_utility ||=
     #         OmniAuth::LoginDotGov::LogoutUtility.new(idp_base_url: Rails.configuration.oidc['idp_url'])
@@ -27,9 +27,7 @@ module OmniAuth
       # fetch the OpenID configuration. The object should be memoized to avoid sending an
       # HTTP request for each logout.
       def initialize(idp_base_url: nil, idp_configuration: nil, end_session_endpoint: nil)
-        unless idp_base_url || end_session_endpoint || idp_configuration
-          raise ArgumentError('idp_base_url, end_session_endpoint or idp_configuration must not be nil')
-        end
+        check_initialize_arguments!(idp_base_url, idp_configuration, end_session_endpoint)
 
         if end_session_endpoint
           @end_session_endpoint = end_session_endpoint
@@ -39,6 +37,12 @@ module OmniAuth
           configuration = OmniAuth::LoginDotGov::IdpConfiguration.new(idp_base_url: idp_base_url)
           @end_session_endpoint = configuration.end_session_endpoint
         end
+      end
+
+      def check_initialize_arguments!(idp_base_url, idp_configuration, end_session_endpoint)
+        return if idp_base_url || end_session_endpoint || idp_configuration
+
+        raise ArgumentError, 'idp_base_url, end_session_endpoint or idp_configuration must not be nil'
       end
 
       # @param id_token [String]

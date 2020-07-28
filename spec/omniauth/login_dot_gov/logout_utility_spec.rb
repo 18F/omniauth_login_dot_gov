@@ -29,5 +29,9 @@ describe OmniAuth::LoginDotGov::LogoutUtility do
       expect(redirect_uri).to include(CGI.escape(post_logout_redirect_uri))
       expect(redirect_uri).to include(state)
     end
+
+    it 'raises with all nil parameters' do
+      expect { OmniAuth::LoginDotGov::LogoutUtility.new }.to raise_error(ArgumentError)
+    end
   end
 end
