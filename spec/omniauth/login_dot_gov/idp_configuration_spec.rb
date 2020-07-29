@@ -8,6 +8,7 @@ describe OmniAuth::LoginDotGov::IdpConfiguration do
     authorization_endpoint: 'http://idp.example.gov/openid_connect/authorize',
     token_endpoint: 'http://idp.example.gov/api/openid_connect/token',
     userinfo_endpoint: 'http://idp.example.gov/api/openid_connect/userinfo',
+    end_session_endpoint: 'http://idp.example.gov/openid_connect/logout',
   }.each do |method, expected_result|
     describe "##{method}" do
       context 'when the configuration request is successful' do

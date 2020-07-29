@@ -17,6 +17,10 @@ module OmniAuth
         openid_configuration['userinfo_endpoint']
       end
 
+      def end_session_endpoint
+        openid_configuration['end_session_endpoint']
+      end
+
       def public_key
         @public_key = begin
           certs = JSON.parse(jwks_endpoint_response.body)
