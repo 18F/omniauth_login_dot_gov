@@ -9,7 +9,9 @@ There is a known vulnerability with Omniauth that affects this gem as
 well as any implementation of Omniauth with a single strategy. Please
 review [CVE-2015-9284](https://nvd.nist.gov/vuln/detail/CVE-2015-9284) for more
 information and mitigation steps. The [Omniauth Wiki](https://github.com/omniauth/omniauth/wiki/Resolving-CVE-2015-9284) also
-has relevant information (August 2019). 
+has relevant information (August 2019).
+
+The vulnerability allows for an attacker to connect an authentication provider (like Login.gov) to a client application without any user interaction. The vulnerability is partially mitigated for this gem because Login.gov requires users to explicitly authorize an application on Login.gov before an application is connected. Users of this gem should still understand the vulnerability and mitigate further with the steps detailed in the Omniauth wiki above.
 
 ## Getting started in a Rails app
 
