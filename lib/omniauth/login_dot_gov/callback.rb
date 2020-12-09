@@ -26,7 +26,7 @@ module OmniAuth
 
       def verify_state(params)
         cb_state = params['state']
-        if cb_state
+        if cb_state.present?
           cb_state_digest = OpenSSL::Digest::SHA256.base64digest(cb_state)
           return if SecureCompare.compare(
             cb_state_digest,
