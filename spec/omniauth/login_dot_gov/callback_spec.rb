@@ -114,6 +114,14 @@ describe OmniAuth::LoginDotGov::Callback do
           OmniAuth::LoginDotGov::CallbackStateMismatchError
         )
       end
+
+      it 'raises an error when the state is missing' do
+        params['state'] = nil
+
+        expect { subject.call(params) }.to raise_error(
+          OmniAuth::LoginDotGov::CallbackStateMismatchError
+        )
+      end
     end
 
     context 'when serialization of session differs' do

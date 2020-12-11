@@ -26,11 +26,13 @@ module OmniAuth
 
       def verify_state(params)
         cb_state = params['state']
-        cb_state_digest = OpenSSL::Digest::SHA256.base64digest(cb_state)
-        return if SecureCompare.compare(
-          cb_state_digest,
-          get_oidc_value_from_session(:state_digest)
-        )
+        if cb_state.present?
+          cb_state_digest = OpenSSL::Digest::SHA256.base64digest(cb_state)
+          return if SecureCompare.compare(
+            cb_state_digest,
+            get_oidc_value_from_session(:state_digest)
+          )
+        end
         raise CallbackStateMismatchError
       end
 
