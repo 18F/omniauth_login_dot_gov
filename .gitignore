@@ -1,7 +1,0 @@
-.env*
-.ruby_version
-tmp/
-*.pem
-*.crt
-.overcommit.yml
-tmp/*
