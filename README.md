@@ -43,7 +43,8 @@ Now that your app is configured with login.gov's sandbox as a Service Provider, 
 1. Copy your private key to your application's `config` directory (eg. `config/private.pem`)
 2. Add this gem to the Gemfile:
   ```ruby
-  gem 'omniauth_login_dot_gov', :git => 'https://github.com/18f/omniauth_login_dot_gov.git'
+  gem 'omniauth_login_dot_gov', :git => 'https://github.com/18f/omniauth_login_dot_gov.git',
+                                :branch => 'main'
   ```
 3. Install this gem and dependencies with `bundle install`
 4. Now, configure the Omniauth middleware with an initializer:
