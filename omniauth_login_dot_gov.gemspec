@@ -29,7 +29,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'json-jwt', '~> 1.11'
   s.add_dependency 'jwt', '~> 2.2'
   s.add_dependency 'multi_json', '~> 1.14'
-  s.add_dependency 'omniauth', '~> 1.8.1'
+  s.add_dependency 'omniauth', '~> 2.0'
 
   s.add_development_dependency 'codeclimate-test-reporter'
   s.add_development_dependency 'pry-byebug'
