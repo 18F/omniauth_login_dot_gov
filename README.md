@@ -84,10 +84,10 @@ Now that your app is configured with login.gov's sandbox as a Service Provider, 
   ```
 6. Add the callback route to `routes.rb`
   ```ruby
-  get '/auth/logindotgov/callback' => 'users/omniauth#callback'
+  get '/auth/login_dot_gov/callback' => 'users/omniauth#callback'
   ```
 
-7. Start your application and visit: `/auth/logindotgov` (eg. http://localhost:3000/auth/logindotgov) to initiate authentication with login.gov!
+7. Start your application and send a `POST` request to: `/auth/login_dot_gov` (eg. http://localhost:3000/auth/login_dot_gov) to initiate authentication with login.gov!
 
 
 ## Public domain
