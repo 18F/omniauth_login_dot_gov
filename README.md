@@ -40,14 +40,24 @@ You will need to register your service provider with our sandbox environment usi
 
 Now that your app is configured with login.gov's sandbox as a Service Provider, you can begin configuring your local application.
 
-1. Copy your private key to your application's `config` directory (eg. `config/private.pem`)
+1. Make the private key available to your application. This can be done by running `bin/rails credentials:edit` and adding the following:
+  ```yaml
+  login_pem: |-
+    -----BEGIN PRIVATE KEY-----
+    <PRIVATEKEY>
+    -----END PRIVATE KEY-----
+  ```
 2. Add this gem to the Gemfile:
   ```ruby
   gem 'omniauth_login_dot_gov', :git => 'https://github.com/18f/omniauth_login_dot_gov.git',
                                 :branch => 'main'
   ```
-3. Install this gem and dependencies with `bundle install`
-4. Now, configure the Omniauth middleware with an initializer:
+3. Additionally, add the Omniauth CSRF protection gem to the Gemfile to address the CVE referenced above:
+  ```ruby
+  gem 'omniauth-rails_csrf_protection'
+  ```
+4. Install these gems and dependencies with `bundle install`
+5. Now, configure the Omniauth middleware with an initializer:
   ```ruby
   # config/initializers/omniauth.rb
   Rails.application.config.middleware.use OmniAuth::Builder do
@@ -56,12 +66,12 @@ Now that your app is configured with login.gov's sandbox as a Service Provider, 
       client_id: 'urn:gov:gsa:openidconnect:sp:myapp', # same value as registered in the Partner Dashboard
       idp_base_url: 'https://idp.int.identitysandbox.gov/', # login.gov sandbox environment IdP
       ial: 1,
-      private_key: OpenSSL::PKey::RSA.new(File.read('config/private.pem')),
+      private_key: OpenSSL::PKey::RSA.new(Rails.application.credentials.login_pem),
       redirect_uri: 'http://localhost:3000/auth/logindotgov/callback',
     }
   end
   ```
-5. Create a controller for handling the callback, such as this:
+6. Create a controller for handling the callback, such as this:
   ```ruby
   # app/controllers/users/omniauth_controller.rb
   module Users
@@ -82,12 +92,12 @@ Now that your app is configured with login.gov's sandbox as a Service Provider, 
     end
   end
   ```
-6. Add the callback route to `routes.rb`
+7. Add the callback route to `routes.rb`
   ```ruby
   get '/auth/login_dot_gov/callback' => 'users/omniauth#callback'
   ```
 
-7. Start your application and send a `POST` request to: `/auth/login_dot_gov` (eg. http://localhost:3000/auth/login_dot_gov) to initiate authentication with login.gov!
+8. Start your application and send a `POST` request to: `/auth/login_dot_gov` (eg. http://localhost:3000/auth/login_dot_gov) to initiate authentication with login.gov!
 
 
 ## Public domain
