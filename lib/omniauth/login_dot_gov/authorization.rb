@@ -2,7 +2,7 @@ module OmniAuth
   module LoginDotGov
     class Authorization
       attr_reader :session, :client
-      VALID_AAL_VALUES = [2, 3, '3-hspd12']
+      VALID_AAL_VALUES = %w[2 3 3-hspd12].freeze
 
       def initialize(session:, client:)
         @session = session
