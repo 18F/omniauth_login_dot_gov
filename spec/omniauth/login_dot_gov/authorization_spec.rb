@@ -43,7 +43,7 @@ describe OmniAuth::LoginDotGov::Authorization do
 
         params = Rack::Utils.parse_query(auth_uri.query)
 
-        expect(params['aal']).to eq(aal)
+        expect(params['acr_values']).to eq('http://idmanagement.gov/ns/assurance/loa/1 http://idmanagement.gov/ns/assurance/aal/3?hspd12=true')
       end
     end
   end

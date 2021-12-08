@@ -40,11 +40,24 @@ module OmniAuth
       end
 
       def acr_values
-        if client.ial == 2
+        values = []
+
+        values << if client.ial == 2
           'http://idmanagement.gov/ns/assurance/loa/3'
         else
           'http://idmanagement.gov/ns/assurance/loa/1'
         end
+
+        values << case aal.to_s
+        when '2'
+          'http://idmanagement.gov/ns/assurance/aal/2'
+        when '3'
+          'http://idmanagement.gov/ns/assurance/aal/3'
+        when '3-hspd12'
+          'http://idmanagement.gov/ns/assurance/aal/3?hspd12=true'
+        end
+
+        values.join(' ').strip
       end
 
       def state
