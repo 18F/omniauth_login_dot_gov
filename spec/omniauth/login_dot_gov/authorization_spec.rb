@@ -1,5 +1,6 @@
 describe OmniAuth::LoginDotGov::Authorization do
-  let(:client) { MockClient.new }
+  let(:aal) { nil }
+  let(:client) { MockClient.new({aal: aal}) }
   let(:session) { {} }
 
   subject { described_class.new(session: session, client: client) }
@@ -30,6 +31,20 @@ describe OmniAuth::LoginDotGov::Authorization do
       expect(params['state']).to_not be_blank
       state_digest = OpenSSL::Digest::SHA256.base64digest(params['state'])
       expect(state_digest).to eq(session[:oidc][:state_digest])
+    end
+
+    context 'Client configured with AAL 3-hspd12' do
+      let(:aal) { '3-hspd12' }
+      it 'returns an auth URL with AAL 3-hspd12' do
+        auth_uri = URI.parse(subject.redirect_url)
+
+        expect(auth_uri.hostname).to eq('idp.example.gov')
+        expect(auth_uri.path).to eq('/openid_connect/authorize')
+
+        params = Rack::Utils.parse_query(auth_uri.query)
+
+        expect(params['aal']).to eq(aal)
+      end
     end
   end
 end

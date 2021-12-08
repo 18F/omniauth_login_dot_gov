@@ -2,6 +2,7 @@ module OmniAuth
   module LoginDotGov
     class Authorization
       attr_reader :session, :client
+      VALID_AAL_VALUES = [2, 3, '3-hspd12']
 
       def initialize(session:, client:)
         @session = session
@@ -26,6 +27,16 @@ module OmniAuth
           state: state,
           nonce: nonce,
         }
+      end
+
+      def aal
+        if client.aal.nil?
+          nil
+        elsif VALID_AAL_VALUES.include?(client.aal.to_s)
+          client.aal
+        else
+          raise "Invalid AAL, choose one of #{VALID_AAL_VALUES}"
+        end
       end
 
       def acr_values
