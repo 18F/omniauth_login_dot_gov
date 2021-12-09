@@ -33,7 +33,7 @@ module OmniAuth
         if client.aal.nil?
           nil
         elsif VALID_AAL_VALUES.include?(client.aal.to_s)
-          client.aal
+          client.aal.to_s
         else
           raise "Invalid AAL, choose one of #{VALID_AAL_VALUES}"
         end
@@ -48,7 +48,7 @@ module OmniAuth
           'http://idmanagement.gov/ns/assurance/loa/1'
         end
 
-        values << case aal.to_s
+        values << case aal
         when '2'
           'http://idmanagement.gov/ns/assurance/aal/2'
         when '3'
