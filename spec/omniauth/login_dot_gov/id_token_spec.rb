@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe OmniAuth::LoginDotGov::IdToken do
   let(:session_nonce) { '123abc' }
   let(:session_nonce_digest) do
@@ -20,7 +22,7 @@ describe OmniAuth::LoginDotGov::IdToken do
   end
 
   describe '#verify_nonce' do
-    context 'when the nonce matches the nonce in the sesison' do
+    context 'when the nonce matches the nonce in the session' do
       it 'returns true' do
         expect(subject.verify_nonce(session_nonce_digest)).to eq(true)
       end
@@ -32,6 +34,24 @@ describe OmniAuth::LoginDotGov::IdToken do
       it 'raises an error' do
         expect { subject.verify_nonce(session_nonce_digest) }.to raise_error(
           OmniAuth::LoginDotGov::IdTokenNonceMismatchError
+        )
+      end
+    end
+
+    context 'when the token nbf is within 10 seconds past decoding time' do
+      let(:jwt) { JWT.encode({ nbf: Time.now.to_i + 10, nonce: jwt_nonce }, IdpFixtures.private_key, 'RS256') }
+
+      it 'allows 10 seconds of leeway' do
+        expect(subject.verify_nonce(session_nonce_digest)).to eq true
+      end
+    end
+
+    context 'when the token nbg is not within 10 seconds past decoding' do
+      let(:jwt) { JWT.encode({ nbf: Time.now.to_i + 11, nonce: jwt_nonce }, IdpFixtures.private_key, 'RS256') }
+
+      it 'raises ImmatureSignature error' do
+        expect { subject.verify_nonce(session_nonce_digest) }.to raise_error(
+          JWT::ImmatureSignature
         )
       end
     end
