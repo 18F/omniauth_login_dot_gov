@@ -35,5 +35,22 @@ describe OmniAuth::LoginDotGov::IdToken do
         )
       end
     end
+    context 'when the token nbf is within 10 seconds past decoding time' do
+      let(:jwt) { JWT.encode({ nbf: Time.now.to_i + 10, nonce: jwt_nonce }, IdpFixtures.private_key, 'RS256') }
+
+      it 'allows 10 seconds of leeway' do
+        expect(subject.verify_nonce(session_nonce_digest)).to eq true
+      end
+    end
+
+    context 'when the token nbf is not within 10 seconds past decoding time' do
+      let(:jwt) { JWT.encode({ nbf: Time.now.to_i + 11, nonce: jwt_nonce }, IdpFixtures.private_key, 'RS256') }
+
+      it 'raises ImmatureSignature error' do
+        expect { subject.verify_nonce(session_nonce_digest) }.to raise_error(
+          JWT::ImmatureSignature
+        )
+      end
+    end
   end
 end
