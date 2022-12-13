@@ -2,7 +2,7 @@ describe OmniAuth::LoginDotGov::LogoutUtility do
   include OpenidConfigurationWebmock
   let(:post_logout_redirect_uri) { 'http://localhost:30001' }
   let(:state) { '0123456789098765432101' }
-  let(:id_token) { 'abc123' }
+  let(:client_id) { 'abc123' }
 
   subject do
     described_class.new(
@@ -14,7 +14,7 @@ describe OmniAuth::LoginDotGov::LogoutUtility do
     context 'initialized with idp_base_url' do
       before { stub_openid_configuration_request }
       it 'generates state if not given' do
-        request = subject.build_request(id_token: id_token, post_logout_redirect_uri: post_logout_redirect_uri)
+        request = subject.build_request(client_id: client_id, post_logout_redirect_uri: post_logout_redirect_uri)
         state = request.state
 
         expect(state).to_not be_nil
@@ -23,14 +23,14 @@ describe OmniAuth::LoginDotGov::LogoutUtility do
 
       it 'generates redirect_uri' do
         request = subject.build_request(
-          id_token: id_token,
+          client_id: client_id,
           post_logout_redirect_uri: post_logout_redirect_uri,
           state: state
         )
         redirect_uri = request.redirect_uri
 
         expect(redirect_uri).to start_with(IdpFixtures.base_url)
-        expect(redirect_uri).to include(id_token)
+        expect(redirect_uri).to include(client_id)
         expect(redirect_uri).to include(CGI.escape(post_logout_redirect_uri))
         expect(redirect_uri).to include(state)
       end
@@ -40,14 +40,14 @@ describe OmniAuth::LoginDotGov::LogoutUtility do
       it 'generates redirect_uri and does not make HTTP request for logout URL' do
         logout_utility = OmniAuth::LoginDotGov::LogoutUtility.new(end_session_endpoint: 'http://localhost:4000/logout')
         request = logout_utility.build_request(
-          id_token: id_token,
+          client_id: client_id,
           post_logout_redirect_uri: post_logout_redirect_uri,
           state: state
         )
         redirect_uri = request.redirect_uri
 
         expect(redirect_uri).to start_with('http://localhost:4000/logout')
-        expect(redirect_uri).to include(id_token)
+        expect(redirect_uri).to include(client_id)
         expect(redirect_uri).to include(CGI.escape(post_logout_redirect_uri))
         expect(redirect_uri).to include(state)
       end
@@ -59,14 +59,14 @@ describe OmniAuth::LoginDotGov::LogoutUtility do
         idp_config = OmniAuth::LoginDotGov::IdpConfiguration.new(idp_base_url: IdpFixtures.base_url)
         logout_utility = OmniAuth::LoginDotGov::LogoutUtility.new(idp_configuration: idp_config)
         request = logout_utility.build_request(
-          id_token: id_token,
+          client_id: client_id,
           post_logout_redirect_uri: post_logout_redirect_uri,
           state: state
         )
         redirect_uri = request.redirect_uri
 
         expect(redirect_uri).to start_with(IdpFixtures.base_url)
-        expect(redirect_uri).to include(id_token)
+        expect(redirect_uri).to include(client_id)
         expect(redirect_uri).to include(CGI.escape(post_logout_redirect_uri))
         expect(redirect_uri).to include(state)
       end

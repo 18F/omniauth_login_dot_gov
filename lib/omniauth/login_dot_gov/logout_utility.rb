@@ -45,14 +45,16 @@ module OmniAuth
         raise ArgumentError, 'idp_base_url, end_session_endpoint or idp_configuration must not be nil'
       end
 
-      # @param id_token [String]
+      # @param client_id [String]
       # @param post_logout_redirect_uri [String]
       # @param state [String]
       # @return [Request]
-      def build_request(id_token:, post_logout_redirect_uri:, state: nil)
+      def build_request(client_id:, post_logout_redirect_uri:, state: nil)
         state ||= SecureRandom.urlsafe_base64(48)
 
-        logout_params = { state: state, id_token_hint: id_token, post_logout_redirect_uri: post_logout_redirect_uri }
+        logout_params = { state: state, post_logout_redirect_uri: post_logout_redirect_uri }
+        
+        logout_params[:client_id] = client_id if client_id
 
         Request.new(
           "#{@end_session_endpoint}?#{logout_params.to_query}",
