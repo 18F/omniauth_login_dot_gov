@@ -1,6 +1,6 @@
 describe OmniAuth::LoginDotGov::Authorization do
   let(:aal) { nil }
-  let(:client) { MockClient.new({aal: aal}) }
+  let(:client) { MockClient.new(aal: aal) }
   let(:session) { {} }
 
   subject { described_class.new(session: session, client: client) }
