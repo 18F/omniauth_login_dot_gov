@@ -1,6 +1,7 @@
 describe OmniAuth::LoginDotGov::Authorization do
   let(:aal) { nil }
-  let(:client) { MockClient.new(aal: aal) }
+  let(:ial) { 1 }
+  let(:client) { MockClient.new(aal: aal, ial: ial) }
   let(:session) { {} }
 
   subject { described_class.new(session: session, client: client) }
@@ -14,7 +15,7 @@ describe OmniAuth::LoginDotGov::Authorization do
 
       params = Rack::Utils.parse_query(auth_uri.query)
 
-      expect(params['acr_values']).to eq('http://idmanagement.gov/ns/assurance/loa/1')
+      expect(params['acr_values']).to eq('http://idmanagement.gov/ns/assurance/ial/1')
       expect(params['client_id']).to eq('urn:gov:gsa:openidconnect:sp:omniauth-test-client')
       expect(params['response_type']).to eq('code')
       expect(params['redirect_uri']).to eq('http://omniauth.example.gov/auth/LoginDotGov/callback')
@@ -43,7 +44,7 @@ describe OmniAuth::LoginDotGov::Authorization do
 
         params = Rack::Utils.parse_query(auth_uri.query)
 
-        expect(params['acr_values']).to eq('http://idmanagement.gov/ns/assurance/loa/1 http://idmanagement.gov/ns/assurance/aal/2?phishing_resistant=true')
+        expect(params['acr_values']).to eq('http://idmanagement.gov/ns/assurance/ial/1 http://idmanagement.gov/ns/assurance/aal/2?phishing_resistant=true')
       end
     end
 
@@ -57,7 +58,7 @@ describe OmniAuth::LoginDotGov::Authorization do
 
         params = Rack::Utils.parse_query(auth_uri.query)
 
-        expect(params['acr_values']).to eq('http://idmanagement.gov/ns/assurance/loa/1 http://idmanagement.gov/ns/assurance/aal/2?hspd12=true')
+        expect(params['acr_values']).to eq('http://idmanagement.gov/ns/assurance/ial/1 http://idmanagement.gov/ns/assurance/aal/2?hspd12=true')
       end
     end
 
@@ -71,7 +72,22 @@ describe OmniAuth::LoginDotGov::Authorization do
 
         params = Rack::Utils.parse_query(auth_uri.query)
 
-        expect(params['acr_values']).to eq('http://idmanagement.gov/ns/assurance/loa/1 http://idmanagement.gov/ns/assurance/aal/3?hspd12=true')
+        expect(params['acr_values']).to eq('http://idmanagement.gov/ns/assurance/ial/1 http://idmanagement.gov/ns/assurance/aal/3?hspd12=true')
+      end
+    end
+
+    context 'Client configured with IAL 2' do
+      let(:ial) { '2' }
+      let(:aal) { '2' }
+      it 'returns an auth URL with IAL 2' do
+        auth_uri = URI.parse(subject.redirect_url)
+
+        expect(auth_uri.hostname).to eq('idp.example.gov')
+        expect(auth_uri.path).to eq('/openid_connect/authorize')
+
+        params = Rack::Utils.parse_query(auth_uri.query)
+
+        expect(params['acr_values']).to eq('http://idmanagement.gov/ns/assurance/ial/2 http://idmanagement.gov/ns/assurance/aal/2')
       end
     end
   end
