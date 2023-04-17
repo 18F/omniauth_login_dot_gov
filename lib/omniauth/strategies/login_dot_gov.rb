@@ -48,6 +48,7 @@ module OmniAuth
         @client ||= OmniAuth::LoginDotGov::Client.new(
           client_id: options.client_id,
           ial: options.ial,
+          aal: options.aal,
           idp_base_url: options.idp_base_url,
           private_key: options.private_key,
           redirect_uri: options.redirect_uri,
