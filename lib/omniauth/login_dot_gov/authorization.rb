@@ -39,13 +39,25 @@ module OmniAuth
         end
       end
 
+      def ial
+        case client.ial
+        when '1', 1
+          1
+        when '2', 2
+          2
+        else
+          raise "Invalid IAL, choose 1 or 2"
+        end
+      end
+
       def acr_values
         values = []
 
-        values << if client.ial == 2
-          'http://idmanagement.gov/ns/assurance/loa/3'
-        else
-          'http://idmanagement.gov/ns/assurance/loa/1'
+        values << case ial
+        when 1
+          'http://idmanagement.gov/ns/assurance/ial/1'
+        when 2
+          'http://idmanagement.gov/ns/assurance/ial/2'
         end
 
         values << case aal
