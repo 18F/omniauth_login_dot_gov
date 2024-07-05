@@ -26,6 +26,7 @@ module OmniAuth
           uuid: parsed_body['sub'],
           email: parsed_body['email'],
           email_verified: parsed_body['email_verified'],
+          all_emails: parsed_body['all_emails'],
           family_name: parsed_body['family_name'],
           given_name: parsed_body['given_name'],
           birthdate: parsed_body['birthdate'],

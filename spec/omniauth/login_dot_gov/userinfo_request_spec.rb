@@ -35,6 +35,24 @@ describe OmniAuth::LoginDotGov::UserinfoRequest do
         expect(userinfo.uuid).to eq(uuid)
         expect(userinfo.email).to eq(email)
         expect(userinfo.email_verified).to eq(email_verified)
+        expect(userinfo.all_emails).to be_nil
+      end
+
+      context 'returns userinfo with all_emails' do
+        let(:all_emails) { [email, 'qwerty@gmail.com'] }
+        let(:response_body) do
+          {
+            sub: uuid,
+            email: email,
+            email_verified: email_verified,
+            all_emails: all_emails,
+          }.to_json
+        end
+
+        it 'returns all_emails' do
+          userinfo = subject.request_userinfo
+          expect(userinfo.all_emails).to eq(all_emails)
+        end
       end
     end
 
