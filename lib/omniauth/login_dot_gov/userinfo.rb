@@ -4,6 +4,7 @@ module OmniAuth
       :uuid,
       :email,
       :email_verified,
+      :all_emails,
       :family_name,
       :given_name,
       :birthdate,
@@ -12,11 +13,11 @@ module OmniAuth
       :phone,
       :phone_verified
     ) do
-
       def initialize(
         uuid: nil,
         email: nil,
         email_verified: nil,
+        all_emails: nil,
         family_name: nil,
         given_name: nil,
         birthdate: nil,
@@ -28,6 +29,7 @@ module OmniAuth
         self.uuid = uuid
         self.email = email
         self.email_verified = email_verified
+        self.all_emails = all_emails
         self.family_name = family_name
         self.given_name = given_name
         self.birthdate = birthdate
