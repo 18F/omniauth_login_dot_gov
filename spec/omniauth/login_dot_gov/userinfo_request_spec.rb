@@ -67,9 +67,9 @@ describe OmniAuth::LoginDotGov::UserinfoRequest do
           }.to_json
         end
 
-        it 'returns all_emails' do
+        it 'returns verified_at' do
           userinfo = subject.request_userinfo
-          expect(userinfo.verified_at).to eq(verified_at)
+          expect(userinfo.verified_at).to eq(Time.at(1723054856))
         end
       end
 
