@@ -36,6 +36,7 @@ describe OmniAuth::LoginDotGov::UserinfoRequest do
         expect(userinfo.email).to eq(email)
         expect(userinfo.email_verified).to eq(email_verified)
         expect(userinfo.all_emails).to be_nil
+        expect(userinfo.verified_at).to be_nil
       end
 
       context 'returns userinfo with all_emails' do
@@ -54,22 +55,39 @@ describe OmniAuth::LoginDotGov::UserinfoRequest do
           expect(userinfo.all_emails).to eq(all_emails)
         end
       end
-    end
 
-    context 'when the request fails' do
-      before do
-        stub_userinfo_request(
-          body: 'Access Denied',
-          status: 403,
-          access_token: access_token
-        )
+      context 'returns userinfo with verified_at timestamp' do
+        let(:verified_at) { 1723054856 }
+        let(:response_body) do
+          {
+            sub: uuid,
+            email: email,
+            email_verified: email_verified,
+            verified_at: verified_at
+          }.to_json
+        end
+
+        it 'returns verified_at' do
+          userinfo = subject.request_userinfo
+          expect(userinfo.verified_at).to eq(Time.at(1723054856))
+        end
       end
 
-      it 'raises an error' do
-        expect { subject.request_userinfo }.to raise_error(
-          OmniAuth::LoginDotGov::UserinfoRequestError,
-          'Userinfo request failed with status code: 403'
-        )
+      context 'when the request fails' do
+        before do
+          stub_userinfo_request(
+            body: 'Access Denied',
+            status: 403,
+            access_token: access_token
+          )
+        end
+
+        it 'raises an error' do
+          expect { subject.request_userinfo }.to raise_error(
+            OmniAuth::LoginDotGov::UserinfoRequestError,
+            'Userinfo request failed with status code: 403'
+          )
+        end
       end
     end
   end
