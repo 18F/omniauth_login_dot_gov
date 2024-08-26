@@ -11,7 +11,8 @@ module OmniAuth
       :social_security_number,
       :address,
       :phone,
-      :phone_verified
+      :phone_verified,
+      :verified_at
     ) do
       def initialize(
         uuid: nil,
@@ -24,7 +25,8 @@ module OmniAuth
         social_security_number: nil,
         address: nil,
         phone: nil,
-        phone_verified: nil
+        phone_verified: nil,
+        verified_at: nil
       )
         self.uuid = uuid
         self.email = email
@@ -37,6 +39,7 @@ module OmniAuth
         self.address = address
         self.phone = phone
         self.phone_verified = phone_verified
+        self.verified_at = verified_at
       end
 
       def to_h

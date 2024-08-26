@@ -33,7 +33,8 @@ module OmniAuth
           social_security_number: parsed_body['social_security_number'],
           address: parsed_body['address'],
           phone: parsed_body['phone'],
-          phone_verified: parsed_body['phone_verified']
+          phone_verified: parsed_body['phone_verified'],
+          verified_at: parsed_body['verified_at'],
         )
       end
 
