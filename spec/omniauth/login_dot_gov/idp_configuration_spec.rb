@@ -36,16 +36,16 @@ describe OmniAuth::LoginDotGov::IdpConfiguration do
     end
   end
 
-  describe '#public_key' do
+  describe '#public_keys' do
     before { stub_openid_configuration_request }
 
     context 'when the certs request is successful' do
       before { stub_jwks_request }
 
-      it 'returns the IDP public key' do
-        result = subject.public_key
+      it 'returns the IDP public keys' do
+        result = subject.public_keys
 
-        expect(result.to_pem).to eq(IdpFixtures.public_key.to_pem)
+        expect(result.map(&:to_pem)).to eq(IdpFixtures.public_keys.map(&:to_pem))
       end
     end
 
@@ -53,7 +53,7 @@ describe OmniAuth::LoginDotGov::IdpConfiguration do
       before { stub_jwks_request(body: 'Not found', status: 404) }
 
       it 'raises an error' do
-        expect { subject.public_key }.to raise_error(
+        expect { subject.public_keys }.to raise_error(
           OmniAuth::LoginDotGov::OpenidDiscoveryError,
           'JWKS request failed with status code: 404'
         )

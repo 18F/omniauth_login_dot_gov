@@ -21,10 +21,12 @@ module OmniAuth
         openid_configuration['end_session_endpoint']
       end
 
-      def public_key
-        @public_key = begin
-          certs = JSON.parse(jwks_endpoint_response.body)
-          JSON::JWK.new(certs['keys'].first).to_key
+      def public_keys
+        @public_keys = begin
+          keys = JSON.parse(jwks_endpoint_response.body)['keys']
+          keys.map do |key|
+            JSON::JWK.new(key).to_key
+          end
         end
       end
 

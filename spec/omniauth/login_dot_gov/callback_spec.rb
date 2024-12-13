@@ -33,7 +33,7 @@ describe OmniAuth::LoginDotGov::Callback do
   let(:id_token_jwt) do
     JWT.encode(
       { nonce: nonce },
-      IdpFixtures.private_key,
+      IdpFixtures.private_keys.first,
       'RS256'
     )
   end

@@ -1,14 +1,18 @@
 module IdpFixtures
-  def self.private_key
-    @private_key ||= OpenSSL::PKey::RSA.new(2048)
+  def self.private_keys
+    @private_keys ||= [OpenSSL::PKey::RSA.new(2048), OpenSSL::PKey::RSA.new(2048)]
   end
 
-  def self.public_key
-    @public_key ||= private_key.public_key
+  def self.public_keys
+    @public_keys ||= private_keys.map do |private_key|
+      private_key.public_key
+    end
   end
 
-  def self.public_key_jwk
-    JSON::JWK.new(public_key)
+  def self.public_key_jwks
+    public_keys.map do |public_key|
+      JSON::JWK.new(public_key)
+    end
   end
 
   def self.base_url
