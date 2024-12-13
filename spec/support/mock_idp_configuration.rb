@@ -19,7 +19,7 @@ class MockIdpConfiguration
     IdpFixtures.jwks_uri
   end
 
-  def public_key
-    IdpFixtures.public_key
+  def public_keys
+    IdpFixtures.public_keys
   end
 end

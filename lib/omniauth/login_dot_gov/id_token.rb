@@ -36,7 +36,7 @@ module OmniAuth
       def decoded_id_token
         @decoded_id_token ||= JWT.decode(
           id_token,
-          client.idp_configuration.public_key,
+          client.idp_configuration.public_keys,
           true,
           algorithm: 'RS256',
           leeway: 10

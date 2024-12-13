@@ -7,7 +7,7 @@ describe OmniAuth::LoginDotGov::IdTokenRequest do
   # Response values
   let(:access_token) { 'access-token-1234' }
   let(:id_token_jwt) do
-    JWT.encode({ asdf: 1234 }, IdpFixtures.private_key, 'RS256')
+    JWT.encode({ asdf: 1234 }, IdpFixtures.private_keys.first, 'RS256')
   end
   let(:token_response_body) do
     {
