@@ -31,7 +31,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'multi_json', '~> 1.14'
   s.add_dependency 'omniauth', '~> 2.0'
 
-  s.add_development_dependency 'codeclimate-test-reporter'
   s.add_development_dependency 'pry-byebug'
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'simplecov'
