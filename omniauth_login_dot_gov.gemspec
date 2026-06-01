@@ -20,9 +20,9 @@ Gem::Specification.new do |s|
     'Gemfile',
     'ominauth_login_dot_gov.gemspec',
   ]
-  s.license = 'LICENSE'
-  s.test_files = `git ls-files -- {test,spec,features}/*`.split("\n")
-  s.executables = `git ls-files -- bin/*`.split("\n").map { |f| File.basename(f) }
+  s.license = 'LICENSE.md'
+  s.test_files = `git ls-files -- spec/*`.split("\n")
+  s.executables = []
   s.require_paths = ['lib']
 
   s.add_dependency 'faraday', '~> 2.0'
