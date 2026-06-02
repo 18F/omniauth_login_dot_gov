@@ -9,6 +9,7 @@ module OmniAuth
       option :private_key
       option :redirect_uri
       option :scope, 'openid email'
+      option :locale, 'en'
 
       attr_reader :authorization, :callback
 
@@ -52,7 +53,8 @@ module OmniAuth
           idp_base_url: options.idp_base_url,
           private_key: options.private_key,
           redirect_uri: options.redirect_uri,
-          scope: options.scope
+          scope: options.scope,
+          locale: request.params['locale'] || options.locale
         )
       end
     end

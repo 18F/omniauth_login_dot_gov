@@ -25,6 +25,7 @@ module OmniAuth
           redirect_uri: client.redirect_uri,
           scope: client.scope,
           state: state,
+          locale: client.locale,
           nonce: nonce,
         }
       end
