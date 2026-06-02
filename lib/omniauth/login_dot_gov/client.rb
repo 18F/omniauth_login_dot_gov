@@ -11,7 +11,7 @@ module OmniAuth
         private_key:,
         redirect_uri:,
         scope:,
-        locale:,
+        locale: 'en',
         aal: nil
       )
         @client_id = client_id
