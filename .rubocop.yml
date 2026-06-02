@@ -1,0 +1,11 @@
+inherit_from: .rubocop_todo.yml
+
+plugins:
+  - rubocop-rspec
+
+AllCops:
+  Exclude:
+    - vendor/**/*
+    - tmp/**/*
+  ExtraDetails: true
+  NewCops: enable
