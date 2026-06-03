@@ -4,10 +4,15 @@ This gem is an Omniauth strategy to provide authentication with Login.gov in a r
 
 #### ⚠️  Common Vulnerabilities and Exposure Warning:
 There is a known vulnerability with Omniauth that affects this gem as
-well as any implementation of Omniauth with a single strategy. Please
-review [CVE-2015-9284](https://nvd.nist.gov/vuln/detail/CVE-2015-9284) for more
-information and mitigation steps. The [Omniauth Wiki](https://github.com/omniauth/omniauth/wiki/Resolving-CVE-2015-9284) also
-has relevant information (August 2019).
+well as any implementation of Omniauth with a single strategy.
+
+> A key part of resolving this vulnerability is refusing GET requests to /auth/:provider endpoints.
+
+Please review the
+[Omniauth Wiki](https://github.com/omniauth/omniauth/wiki/Resolving-CVE-2015-9284)
+for more information and mitigation steps.
+[CVE-2015-9284](https://nvd.nist.gov/vuln/detail/CVE-2015-9284) also
+has relevant information (February 2025).
 
 The vulnerability allows for an attacker to connect an authentication provider (like Login.gov) to a client application without any user interaction. The vulnerability is partially mitigated for this gem because Login.gov requires users to explicitly authorize an application on Login.gov before an application is connected. Users of this gem should still understand the vulnerability and mitigate further with the steps detailed in the Omniauth wiki above.
 
