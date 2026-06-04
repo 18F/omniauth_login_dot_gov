@@ -105,8 +105,6 @@ module OmniAuth
 
         request_locale
       end
-
-
     end
   end
 end
