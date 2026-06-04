@@ -2,7 +2,7 @@ module OmniAuth
   module LoginDotGov
     class Client
       attr_reader :client_id, :ial, :idp_configuration, :private_key,
-                  :redirect_uri, :scope, :aal, :locale
+                  :redirect_uri, :scope, :locale, :aal
 
       def initialize(
         client_id:,
