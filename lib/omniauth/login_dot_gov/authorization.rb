@@ -2,6 +2,8 @@ module OmniAuth
   module LoginDotGov
     class Authorization
       attr_reader :session, :client
+
+      SUPPORTED_LOCALES = %w[en es fr].freeze
       VALID_AAL_VALUES = %w[2 2-phishing-resistant 2-hspd12 3 3-hspd12].freeze
 
       def initialize(session:, client:)
@@ -25,8 +27,8 @@ module OmniAuth
           redirect_uri: client.redirect_uri,
           scope: client.scope,
           state: state,
-          locale: client.locale,
-          nonce: nonce,
+          locale: locale,
+          nonce: nonce
         }
       end
 
@@ -96,6 +98,15 @@ module OmniAuth
           state_value
         end
       end
+
+      def locale
+        request_locale = client.locale
+        return unless request_locale.present? && SUPPORTED_LOCALES.include?(request_locale)
+
+        request_locale
+      end
+
+
     end
   end
 end

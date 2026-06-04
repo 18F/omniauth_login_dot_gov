@@ -11,7 +11,8 @@ describe OmniAuth::LoginDotGov::Client do
       idp_base_url: IdpFixtures.base_url,
       private_key: ClientFixtures.private_key,
       redirect_uri: ClientFixtures.redirect_uri,
-      scope: 'email openid'
+      scope: 'email openid',
+      locale: 'es'
     )
 
     expect(subject.client_id).to eq(ClientFixtures.client_id)
@@ -20,5 +21,6 @@ describe OmniAuth::LoginDotGov::Client do
     expect(subject.private_key).to eq(ClientFixtures.private_key)
     expect(subject.redirect_uri).to eq(ClientFixtures.redirect_uri)
     expect(subject.scope).to eq('email openid')
+    expect(subject.locale).to eq('es')
   end
 end
