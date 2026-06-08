@@ -25,9 +25,7 @@ describe OmniAuth::LoginDotGov::Authorization do
       scope = params['scope'].split(' ')
       expect(scope).to include('openid')
       expect(scope).to include('email')
-
-      expect(params['nonce']).to_not be_blank
-      expect(params['nonce'].length).to eq(32)
+      expect(params['nonce']&.length).to eq(32)
       nonce_digest = OpenSSL::Digest::SHA256.base64digest(params['nonce'])
       expect(nonce_digest).to eq(session[:oidc][:nonce_digest])
 

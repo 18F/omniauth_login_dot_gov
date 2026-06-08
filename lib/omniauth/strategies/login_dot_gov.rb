@@ -57,7 +57,6 @@ module OmniAuth
           locale: request.params['locale'] || options.locale
         )
       end
-
     end
   end
 end

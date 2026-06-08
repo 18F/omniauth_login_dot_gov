@@ -3,7 +3,7 @@ module OmniAuth
     class Authorization
       attr_reader :session, :client
 
-      SUPPORTED_LOCALES = %w[en es fr].freeze
+      SUPPORTED_LOCALES = %w[en es fr zh].freeze
       VALID_AAL_VALUES = %w[2 2-phishing-resistant 2-hspd12 3 3-hspd12].freeze
 
       def initialize(session:, client:)
