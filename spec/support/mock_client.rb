@@ -1,6 +1,6 @@
 class MockClient
   attr_reader :client_id, :ial, :idp_configuration, :private_key,
-              :redirect_uri, :scope, :aal
+              :redirect_uri, :scope, :locale, :aal
 
   def initialize(overrides = {})
     @client_id = ClientFixtures.client_id
@@ -10,6 +10,7 @@ class MockClient
     @private_key = ClientFixtures.private_key
     @redirect_uri = ClientFixtures.redirect_uri
     @scope = 'email openid'
+    @locale = 'en'
 
     overrides.each do |key, value|
       instance_variable_set("@#{key}", value)
