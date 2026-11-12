@@ -124,6 +124,16 @@ describe OmniAuth::LoginDotGov::Callback do
       end
     end
 
+    context 'when the session has no oidc data' do
+      subject { described_class.new(client: client, session: {}) }
+
+      it 'raises a state mismatch error' do
+        expect { subject.call(params) }.to raise_error(
+          OmniAuth::LoginDotGov::CallbackStateMismatchError
+        )
+      end
+    end
+
     context 'when serialization of session differs' do
       context 'when object keys are symbols' do
         let(:local_state_digest) { state_digest }
